@@ -1,12 +1,13 @@
 package org.dafe.tripTix.controller;
 
 import jakarta.validation.Valid;
-import org.dafe.tripTix.controller.reponses.LoginResponse;
+import org.dafe.tripTix.dto.LoginResponse;
 import org.dafe.tripTix.dto.LoginDto;
 import org.dafe.tripTix.dto.SignUpDto;
 import org.dafe.tripTix.email.EmailService;
 import org.dafe.tripTix.entity.User;
 import org.dafe.tripTix.service.JwtService;
+import org.dafe.tripTix.service.RegisterationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

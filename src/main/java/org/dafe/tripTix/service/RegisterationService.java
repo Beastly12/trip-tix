@@ -1,4 +1,4 @@
-package org.dafe.tripTix.controller;
+package org.dafe.tripTix.service;
 
 
 import lombok.AllArgsConstructor;
@@ -12,7 +12,6 @@ import org.dafe.tripTix.entity.UserRole;
 import org.dafe.tripTix.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

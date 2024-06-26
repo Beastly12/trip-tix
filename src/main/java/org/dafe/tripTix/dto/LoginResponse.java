@@ -1,4 +1,4 @@
-package org.dafe.tripTix.controller.reponses;
+package org.dafe.tripTix.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
