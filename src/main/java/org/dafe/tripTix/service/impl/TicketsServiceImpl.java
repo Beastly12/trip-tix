@@ -2,9 +2,7 @@ package org.dafe.tripTix.service.impl;
 
 import org.dafe.tripTix.dto.AvailableSeatsDto;
 import org.dafe.tripTix.dto.TicketsDto;
-import org.dafe.tripTix.entity.Tickets;
-import org.dafe.tripTix.entity.VehicleSeats;
-import org.dafe.tripTix.entity.VehicleTicket;
+import org.dafe.tripTix.entity.*;
 import org.dafe.tripTix.repository.TicketsRepository;
 import org.dafe.tripTix.repository.VehicleSeatRepository;
 import org.dafe.tripTix.repository.VehicleTicketRepository;
@@ -69,6 +67,9 @@ public class TicketsServiceImpl implements TicketsService {
         return seats;
     }
 
+    public List<Tickets> getTicketsByUser(User user) {
+        return ticketRepository.findByUser(user);
+    }
 }
 
 
