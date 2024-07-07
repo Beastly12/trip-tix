@@ -3,6 +3,7 @@ package org.dafe.tripTix.service;
 import lombok.RequiredArgsConstructor;
 import org.dafe.tripTix.entity.Seat;
 import org.dafe.tripTix.entity.Trip;
+import org.dafe.tripTix.entity.User;
 import org.dafe.tripTix.exception.ApiException;
 import org.dafe.tripTix.repository.SeatRepository;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,9 @@ public class SeatService {
             default:
                 throw new RuntimeException("Unknown vehicle type: " + vehicleType);
         }
+    }
+
+    public List<Seat> getSeatsByUser(User user) {
+        return seatRepository.findByUser(user);
     }
 }

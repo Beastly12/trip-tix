@@ -2,9 +2,7 @@ package org.dafe.tripTix.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.dafe.tripTix.entity.Destination;
-import org.dafe.tripTix.entity.Location;
-import org.dafe.tripTix.entity.Trip;
+import org.dafe.tripTix.entity.*;
 import org.dafe.tripTix.exception.ApiException;
 import org.dafe.tripTix.repository.TripRepository;
 import org.springframework.stereotype.Service;
@@ -34,4 +32,9 @@ public class TripService {
     public Trip getTripById(Long id) {
         return tripRepository.findById(id).orElseThrow(() -> new ApiException("Trip not found"));
     }
+
+    public List<Trip> getTripsByUser(User user) {
+        return tripRepository.findByUser(user);
+    }
+
 }

@@ -38,4 +38,8 @@ public class Trip {
 
     private LocalDateTime departureTime;
     private LocalDateTime estimatedArrivalTime;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
 }

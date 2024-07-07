@@ -36,4 +36,7 @@ public class Seats {
     @OneToMany(mappedBy = "seat")
     private List<VehicleSeats> vehicleSeats;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
 }

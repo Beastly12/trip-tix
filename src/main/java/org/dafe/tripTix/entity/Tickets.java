@@ -68,4 +68,8 @@ public class Tickets {
 
     @OneToMany(mappedBy = "ticket")
     private List<DepartureTicket> departureTickets;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
 }
