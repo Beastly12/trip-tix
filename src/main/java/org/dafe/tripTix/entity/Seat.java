@@ -22,4 +22,9 @@ public class Seat {
     //  UPDATE
     @ManyToOne
     private Trip trip;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
 }
