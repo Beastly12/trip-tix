@@ -20,7 +20,7 @@ services:
     depends_on:
       - mysql
     environment:
-      DB_URL: jdbc:mysql://mysql.railway.internal:3306/ticketTrip?useSSL=false&serverTimezone=UTC
+      DB_URL: jdbc:mysql://root:IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm@viaduct.proxy.rlwy.net:56177/railway
       DB_USERNAME: root
       DB_PASSWORD: IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm
     ports:
