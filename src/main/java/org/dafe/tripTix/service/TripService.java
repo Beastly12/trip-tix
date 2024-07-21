@@ -18,28 +18,28 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@CacheConfig(cacheNames = "bookings")
+//@CacheConfig(cacheNames = "bookings")
 public class TripService {
 
     private final TripRepository tripRepository;
     private final HttpServletRequest request;
 
-    @Cacheable(value = "bookings", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
+//    @Cacheable(value = "bookings", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
     public List<Trip> findAll() {
         return tripRepository.findAll();
     }
 
-    @CacheEvict(value = "bookings", allEntries = true)
+//    @CacheEvict(value = "bookings", allEntries = true)
     public Trip save(Trip trip) {
         return tripRepository.save(trip);
     }
 
-    @CacheEvict(value = "bookings", allEntries = true)
+//    @CacheEvict(value = "bookings", allEntries = true)
     public void delete(Long id) {
         tripRepository.deleteById(id);
     }
 
-    @Cacheable(value = "bookings", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
+//    @Cacheable(value = "bookings", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
     public List<Trip> getAvailableTrips() {
         return tripRepository.findAll();
     }
@@ -48,12 +48,12 @@ public class TripService {
         return tripRepository.findById(id).orElseThrow(() -> new ApiException("Trip not found"));
     }
 
-    @Cacheable(value = "bookings", key = "#from.id + '-' + #to.id", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
+//    @Cacheable(value = "bookings", key = "#from.id + '-' + #to.id", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
     public List<Trip> findTrips(Terminal from, Terminal to) {
         return tripRepository.findByFromAndTo(from, to);
     }
 
-    @CacheEvict(value = "bookings", allEntries = true)
+//    @CacheEvict(value = "bookings", allEntries = true)
     @Transactional
     public Trip updateTrip(Long id, Trip tripDetails) {
         Trip trip = tripRepository.findById(id)
