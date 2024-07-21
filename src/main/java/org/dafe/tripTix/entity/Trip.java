@@ -41,4 +41,9 @@ public class Trip {
     private LocalDateTime arrivalDateTime; // Only for round trips
     private int availableSeats;
     private double price;
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean booked;
 }

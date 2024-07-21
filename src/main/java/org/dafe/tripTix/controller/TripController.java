@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.dafe.tripTix.entity.Terminal;
 import org.dafe.tripTix.entity.Trip;
 import org.dafe.tripTix.service.TripService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,5 +41,9 @@ public class TripController {
     @GetMapping("/available-trips")
     public List<Trip> getAvailableTrips() {
         return tripService.getAvailableTrips();
+    }
+    @PutMapping("/{id}")
+    public Trip updateTrip(@PathVariable Long id, @RequestBody Trip tripDetails) {
+        return tripService.updateTrip(id, tripDetails);
     }
 }

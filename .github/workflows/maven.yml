@@ -1,0 +1,57 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean install -DskipTests
+
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Add user to docker group
+      run: sudo usermod -aG docker $USER
+
+    - name: Set permissions for Docker socket
+      run: sudo chmod 666 /var/run/docker.sock
+
+    - name: Start Docker
+      run: sudo service docker start
+
+    - name: Pull Image from Docker Hub
+      run: sudo docker pull dev21c/trip-tix:latest
+
+    - name: Remove existing container
+      run: |
+        if [ $(sudo docker ps -aq -f name=trip-tix-container) ]; then
+          sudo docker rm -f trip-tix-container
+        fi
+
+    - name: Run Docker container
+      run: sudo docker run -d -p 8080:8080 --name trip-tix-container dev21c/trip-tix:latest
