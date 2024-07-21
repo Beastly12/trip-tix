@@ -16,20 +16,20 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@CacheConfig(cacheNames = "bookings")
+//@CacheConfig(cacheNames = "bookings")
 public class BookingService {
     private BookingsRepository bookingRepository;
 
-    @Cacheable(value = "bookings")
+//    @Cacheable(value = "bookings")
     public List<Booking> findAll() {
         return bookingRepository.findAll();
     }
 
-    @Cacheable(value = "bookings", key = "#userId")
+//    @Cacheable(value = "bookings", key = "#userId")
     public List<Booking> findAllByUserId(Long userId) {
         return bookingRepository.findAllByUserId(userId);
     }
-    @Cacheable(value = "bookings", key = "reference")
+//    @Cacheable(value = "bookings", key = "reference")
     public Booking findByReference(String reference) {
         Optional<Booking> optionalBooking = bookingRepository.findByReference(reference);
         return optionalBooking.orElse(null);
@@ -39,7 +39,7 @@ public class BookingService {
     @Transactional
 //    @CacheEvict(value = "bookings", allEntries = true)
 //    @CacheEvict(value = "bookings", key = "#booking.userId")
-    @CacheEvict(value = "bookings", key = "#booking.reference")
+//    @CacheEvict(value = "bookings", key = "#booking.reference")
     public Booking save(Booking booking) {
         return bookingRepository.save(booking);
     }
