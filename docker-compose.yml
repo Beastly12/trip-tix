@@ -20,7 +20,7 @@ services:
     depends_on:
       - mysql
     environment:
-      DB_URL: jdbc:mysql://root:IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm@viaduct.proxy.rlwy.net:56177/railway
+      DB_URL: jdbc:mysql://root:IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm@viaduct.proxy.rlwy.net:56177/ticketTrip
       DB_USERNAME: root
       DB_PASSWORD: IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm
     ports:
@@ -34,3 +34,4 @@ networks:
 
 volumes:
   mysql_data:
+
