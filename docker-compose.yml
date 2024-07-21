@@ -6,10 +6,10 @@ services:
     container_name: mysql_container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm
-      MYSQL_DATABASE: ticketTrip
+      MYSQL_ROOT_PASSWORD: jfcABjQZWwhezmkVpbZRhXTEgCVVSmjo
+      MYSQL_DATABASE: railway
       MYSQL_USER: root
-      MYSQL_PASSWORD: IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm
+      MYSQL_PASSWORD: jfcABjQZWwhezmkVpbZRhXTEgCVVSmjo
     ports:
       - "3306:3306"
     volumes:
@@ -20,9 +20,9 @@ services:
     depends_on:
       - mysql
     environment:
-      DB_URL: jdbc:mysql://root:IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm@viaduct.proxy.rlwy.net:56177/ticketTrip
+      DB_URL: jdbc:mysql://root:jfcABjQZWwhezmkVpbZRhXTEgCVVSmjo@roundhouse.proxy.rlwy.net:42897/railway
       DB_USERNAME: root
-      DB_PASSWORD: IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm
+      DB_PASSWORD: jfcABjQZWwhezmkVpbZRhXTEgCVVSmjo
     ports:
       - "8080:8080"
     networks:
