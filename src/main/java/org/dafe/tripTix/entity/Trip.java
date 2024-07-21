@@ -32,6 +32,10 @@ public class Trip {
     @ManyToOne
     private Terminal to;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
+
     private TripType tripType;
     private LocalDateTime departureDateTime;
     private LocalDateTime arrivalDateTime; // Only for round trips

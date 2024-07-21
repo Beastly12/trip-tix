@@ -2,6 +2,8 @@ package org.dafe.tripTix.controller;
 
 import lombok.AllArgsConstructor;
 import org.dafe.tripTix.dto.BookingRequest;
+import org.dafe.tripTix.entity.Seat;
+import org.dafe.tripTix.exception.SeatAlreadyBookedException;
 import org.springframework.ui.Model;
 import org.dafe.tripTix.dto.BookingPaymentDto;
 import org.dafe.tripTix.dto.InitializePaymentDto;
@@ -17,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +44,12 @@ public class BookingsController {
 
     @PostMapping("/createbookings")
     public ResponseEntity<String> createBooking(@RequestBody BookingPaymentDto bookingPaymentDto) {
+        Seat seat = bookingPaymentDto.getSeat();
+
+        if (Boolean.TRUE.equals(seat.getBooked())) {
+            throw new SeatAlreadyBookedException("This seat has already been booked.");
+        }
+
         InitializePaymentDto paymentDto = new InitializePaymentDto();
         BigDecimal _a = new BigDecimal("100");
         BigDecimal amount = bookingPaymentDto.getAmount().multiply(_a);
@@ -64,6 +73,13 @@ public class BookingsController {
         booking.setNoOfChildren(bookingPaymentDto.getNoOfChildren());
         booking.setBookedSeat(bookingPaymentDto.getBookedSeat());
 
+        seat.setBooked(true);
+        seat.setBooked_at(LocalDateTime.now()); // Set booked timestamp if needed
+
+        // Save the updated seat entity
+        bookingService.saveseat(seat);
+
+        booking.setSeat(seat);
         // Save booking only after successful payment verification
         booking.setStatus("PENDING"); // Assume initial status
         bookingService.save(booking);

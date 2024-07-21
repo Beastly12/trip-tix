@@ -3,8 +3,10 @@ package org.dafe.tripTix.service;
 import lombok.AllArgsConstructor;
 import org.dafe.tripTix.dto.BookingRequest;
 import org.dafe.tripTix.entity.Booking;
+import org.dafe.tripTix.entity.Seat;
 import org.dafe.tripTix.exception.ApiException;
 import org.dafe.tripTix.repository.BookingsRepository;
+import org.dafe.tripTix.repository.SeatRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.Optional;
 public class BookingService {
     private BookingsRepository bookingRepository;
 
+    private SeatRepository seatRepository;
+
     @Cacheable(value = "bookings")
     public List<Booking> findAll() {
         return bookingRepository.findAll();
@@ -27,7 +31,7 @@ public class BookingService {
     public List<Booking> findAllByUserId(Long userId) {
         return bookingRepository.findAllByUserId(userId);
     }
-    @Cacheable(value = "bookings", key = "reference")
+
     public Booking findByReference(String reference) {
         Optional<Booking> optionalBooking = bookingRepository.findByReference(reference);
         return optionalBooking.orElse(null);
@@ -35,11 +39,13 @@ public class BookingService {
 
 
     @Transactional
-//    @CacheEvict(value = "bookings", allEntries = true)
-//    @CacheEvict(value = "bookings", key = "#booking.userId")
-    @CacheEvict(value = "bookings", key = "#booking.reference")
     public Booking save(Booking booking) {
         return bookingRepository.save(booking);
+    }
+
+    @Transactional
+    public Seat saveseat(Seat seat) {
+        return seatRepository.save(seat);
     }
 
     public void delete(Long id) {

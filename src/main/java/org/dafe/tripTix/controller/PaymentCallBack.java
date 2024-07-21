@@ -31,8 +31,11 @@ public class PaymentCallBack {
                 String status = verificationResponse.getStatus();
 
                 System.out.println("status " + status);
+                System.out.println("true".equalsIgnoreCase(status));
                 if ("true".equalsIgnoreCase(status)) {
+                    System.out.println("If it is true");
                     Booking booking = bookingService.findByReference(reference);
+                    System.out.println(booking == null);
                     if (booking != null) {
                         booking.setStatus("PAID");
                         bookingService.save(booking);
@@ -51,6 +54,7 @@ public class PaymentCallBack {
                 return "error";
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             // Handle any exceptions that occur during payment verification
             return "error";
         }

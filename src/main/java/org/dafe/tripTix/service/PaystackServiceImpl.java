@@ -26,7 +26,6 @@ public class PaystackServiceImpl implements PaystackService{
     private static final Logger logger = LoggerFactory.getLogger(PaystackServiceImpl.class);
 
     @Override
-    @CacheEvict(value = "bookings", allEntries = true)
     public InitializePaymentResponse initializePayment(InitializePaymentDto initializePaymentDto) {
         String url = ApiConstants.PAYSTACK_INITIALIZE_PAY;
 
