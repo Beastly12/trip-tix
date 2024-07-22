@@ -9,17 +9,22 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-//@Configuration
+@Configuration
 public class CorsConfig {
     private static final Long MAX_AGE_SECS = 3600L;
+
     @Value("#{'${cors.exposed-headers}'.split(',')}")
     public List<String> exposedHeaders;
+
     @Value("#{'${cors.allowed-methods}'.split(',')}")
     public List<String> allowedMethods;
+
     @Value("#{'${cors.allowed-headers}'.split(',')}")
     public List<String> allowedHeaders;
+
     @Value("#{'${cors.allowed-origins}'.split(',')}")
     public List<String> allowedOrigins;
+
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -30,7 +35,7 @@ public class CorsConfig {
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(MAX_AGE_SECS);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/bookings/**", configuration);  //CHANGED
+        source.registerCorsConfiguration("/**", configuration);  // Changed to cover all paths
         return source;
     }
 }
