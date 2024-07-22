@@ -33,7 +33,7 @@ public class PaystackServiceImpl implements PaystackService{
         headers.set("Authorization", "Bearer " + paystackSecretKey.trim());
         headers.set("Content-Type", "application/json");
 
-        String callbackUrl = "http://localhost:8090/bookings/paystack/callback";
+        String callbackUrl = "https://trip-tix-production.up.railway.app/bookings/paystack/callback";
         initializePaymentDto.setCallback_url(callbackUrl);
 
         HttpEntity<InitializePaymentDto> request = new HttpEntity<>(initializePaymentDto, headers);

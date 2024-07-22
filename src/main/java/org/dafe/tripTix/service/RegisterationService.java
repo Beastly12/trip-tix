@@ -46,7 +46,7 @@ public class RegisterationService {
                 user
         );
 
-        String link = "http://localhost:8080/api/auth/confirmEmail?userid="+user.getId();
+        String link = "https://trip-tix-production.up.railway.app/api/auth/confirmEmail?userid="+user.getId();
 
         emailSender.send(request.getEmail(), buildEmail(request.getFullName(),link),"Confirm your email");
 

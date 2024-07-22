@@ -55,7 +55,7 @@ public class BookingsController {
         BigDecimal amount = bookingPaymentDto.getAmount().multiply(_a);
 
         paymentDto.setAmount(amount);
-        String callbackUrl = "http://localhost:8090/bookings/paystack/callback";
+        String callbackUrl = "https://trip-tix-production.up.railway.app/bookings/paystack/callback";
         paymentDto.setCallback_url(callbackUrl);
         paymentDto.setEmail(bookingPaymentDto.getEmail());
 
