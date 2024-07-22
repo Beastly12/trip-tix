@@ -9,7 +9,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-@Configuration
+
 public class CorsConfig {
     private static final Long MAX_AGE_SECS = 3600L;
 
