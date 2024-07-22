@@ -12,5 +12,8 @@ import java.util.List;
 public interface TripRepository extends JpaRepository<Trip, Long> {
     List<Trip> findByFromAndTo(Terminal from, Terminal to);
 
+    List<Trip> findByDepartureDateTimeBetweenAndOneDayReminderSentFalse(LocalDateTime start, LocalDateTime end);
+    List<Trip> findByDepartureDateTimeBetweenAndFewHoursReminderSentFalse(LocalDateTime start, LocalDateTime end);
+
     void deleteByCreatedAtBeforeAndBookedFalse(LocalDateTime cutoffTime);
 }

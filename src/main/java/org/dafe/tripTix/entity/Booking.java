@@ -20,6 +20,10 @@ public class Booking {
     @JoinColumn(name = "trip_id")
     private Trip trip;
 
+    @OneToOne
+    @JoinColumn(name = "seat_id",referencedColumnName = "id")
+    private Seat seat;
+
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;

@@ -4,19 +4,34 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.dafe.tripTix.entity.Terminal;
 import org.dafe.tripTix.entity.Trip;
+import org.dafe.tripTix.service.SeatService;
 import org.dafe.tripTix.service.TripService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
-@CrossOrigin
 @RequestMapping("/trip")
-@AllArgsConstructor
 public class TripController {
 
-    private TripService tripService;
+    private final TripService tripService;
+    private final SeatService seatService;
+
+    public TripController(TripService tripService, SeatService seatService) {
+        this.tripService = tripService;
+        this.seatService = seatService;
+    }
+
+    @PostMapping("/block")
+    public ResponseEntity<String> blockSeat(@RequestParam int seatId, @RequestParam int userId) {
+        boolean blocked = seatService.blockSeat(seatId, userId);
+        if (blocked) {
+            return ResponseEntity.ok("Seat successfully blocked.");
+        } else {
+            return ResponseEntity.badRequest().body("Seat could not be blocked. It might be already blocked or not available.");
+        }
+    }
 
     @GetMapping("/trips")
     public List<Trip> getAllTrips() {

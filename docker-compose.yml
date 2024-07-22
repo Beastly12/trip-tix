@@ -1,4 +1,4 @@
-version: '3.8'
+docker-compose.yml file   version: '3.8'
 
 services:
   mysql:
@@ -6,10 +6,10 @@ services:
     container_name: mysql_container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: jfcABjQZWwhezmkVpbZRhXTEgCVVSmjo
-      MYSQL_DATABASE: railway
+      MYSQL_ROOT_PASSWORD: IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm
+      MYSQL_DATABASE: ticketTrip
       MYSQL_USER: root
-      MYSQL_PASSWORD: jfcABjQZWwhezmkVpbZRhXTEgCVVSmjo
+      MYSQL_PASSWORD: IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm
     ports:
       - "3306:3306"
     volumes:
@@ -20,9 +20,9 @@ services:
     depends_on:
       - mysql
     environment:
-      DB_URL: jdbc:mysql://root:jfcABjQZWwhezmkVpbZRhXTEgCVVSmjo@roundhouse.proxy.rlwy.net:42897/railway
+      DB_URL: jdbc:mysql://root:IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm@viaduct.proxy.rlwy.net:56177/railway
       DB_USERNAME: root
-      DB_PASSWORD: jfcABjQZWwhezmkVpbZRhXTEgCVVSmjo
+      DB_PASSWORD: IderzpBCKrMJJSAAkJXzdGfiVmGAjtBm
     ports:
       - "8080:8080"
     networks:
@@ -34,4 +34,3 @@ networks:
 
 volumes:
   mysql_data:
-

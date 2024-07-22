@@ -48,7 +48,7 @@ public class RegisterationService {
 
         String link = "http://localhost:8080/api/auth/confirmEmail?userid="+user.getId();
 
-        emailSender.send(request.getEmail(), buildEmail(request.getFullName(),link));
+        emailSender.send(request.getEmail(), buildEmail(request.getFullName(),link),"Confirm your email");
 
         return user;
 

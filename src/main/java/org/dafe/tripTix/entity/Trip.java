@@ -32,6 +32,14 @@ public class Trip {
     @ManyToOne
     private Terminal to;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "seat_id",referencedColumnName = "id")
+    private Seat seat;
+
     private TripType tripType;
     private LocalDateTime departureDateTime;
     private LocalDateTime arrivalDateTime; // Only for round trips
@@ -42,4 +50,13 @@ public class Trip {
 
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean booked;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean oneDayReminderSent;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean fewHoursReminderSent;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean departureReminderSent;
 }

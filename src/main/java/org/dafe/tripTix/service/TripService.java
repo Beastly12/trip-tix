@@ -4,10 +4,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.dafe.tripTix.entity.Seat;
 import org.dafe.tripTix.entity.Terminal;
 import org.dafe.tripTix.entity.Trip;
 import org.dafe.tripTix.exception.ApiException;
 import org.dafe.tripTix.exception.ResourceNotFoundException;
+import org.dafe.tripTix.repository.SeatRepository;
 import org.dafe.tripTix.repository.TripRepository;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,28 +20,36 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-//@CacheConfig(cacheNames = "bookings")
+@CacheConfig(cacheNames = "bookings")
 public class TripService {
 
     private final TripRepository tripRepository;
+    private final SeatRepository seatRepository;
     private final HttpServletRequest request;
 
-//    @Cacheable(value = "bookings", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
+    @Cacheable(value = "bookings", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
     public List<Trip> findAll() {
         return tripRepository.findAll();
     }
 
-//    @CacheEvict(value = "bookings", allEntries = true)
     public Trip save(Trip trip) {
+        // Ensure the seat is blocked by the user
+        Seat seat = seatRepository.findById(trip.getSeat().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Seat not found with id: " + trip.getSeat().getId()));
+
+        if (seat.isBlocked() && seat.getUser().getId() != (trip.getUser().getId())) {
+            throw new IllegalStateException("This seat is blocked and it wasn't by you.");
+        }
+
         return tripRepository.save(trip);
     }
 
-//    @CacheEvict(value = "bookings", allEntries = true)
+    @CacheEvict(value = "bookings", allEntries = true)
     public void delete(Long id) {
         tripRepository.deleteById(id);
     }
 
-//    @Cacheable(value = "bookings", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
+    @Cacheable(value = "bookings", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
     public List<Trip> getAvailableTrips() {
         return tripRepository.findAll();
     }
@@ -48,12 +58,12 @@ public class TripService {
         return tripRepository.findById(id).orElseThrow(() -> new ApiException("Trip not found"));
     }
 
-//    @Cacheable(value = "bookings", key = "#from.id + '-' + #to.id", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
+    @Cacheable(value = "bookings", key = "#from.id + '-' + #to.id", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
     public List<Trip> findTrips(Terminal from, Terminal to) {
         return tripRepository.findByFromAndTo(from, to);
     }
 
-//    @CacheEvict(value = "bookings", allEntries = true)
+    @CacheEvict(value = "bookings", allEntries = true)
     @Transactional
     public Trip updateTrip(Long id, Trip tripDetails) {
         Trip trip = tripRepository.findById(id)
