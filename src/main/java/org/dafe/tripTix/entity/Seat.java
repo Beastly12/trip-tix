@@ -43,4 +43,7 @@ public class Seat {
     @Nullable
     private LocalDateTime blocked_at;
 
+    public boolean isBlocked() {
+        return Boolean.TRUE.equals(this.blocked);
+    }
 }

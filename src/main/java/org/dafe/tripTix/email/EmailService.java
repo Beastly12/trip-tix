@@ -3,6 +3,7 @@ package org.dafe.tripTix.email;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
+import org.dafe.tripTix.entity.Trip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -31,7 +32,7 @@ public class EmailService implements EmailSender {
             helper.setText(email, true);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setFrom("ebubeuzor17@foxwrld.com");
+            helper.setFrom("TripTix <admin@neatmanindustrial.com>");
 
             mailSender.send(message);
         }catch (MessagingException e){
@@ -41,10 +42,42 @@ public class EmailService implements EmailSender {
         }
     }
 
-    public void sendSeatUnblockedEmail(String to, String userName) {
+    public void sendSeatUnblockedEmail(String to, String userName,String seatType, String blockedDate) {
         Context context = new Context();
         context.setVariable("userName", userName);
+        context.setVariable("seatType", seatType);
+        context.setVariable("blockedDate", blockedDate);
         String emailContent = templateEngine.process("unblock-notification", context);
-        send(to, emailContent,"TripTix Notification: Your Blocked Trip is Now Unavailable");
+        send(to, emailContent,"TripTix Notification: Your Blocked Seat is Now Unavailable");
     }
+
+    public void sendSeatBlockedForUserEmail(String to, String userName,String seatType, String blockedDate) {
+        Context context = new Context();
+        context.setVariable("userName", userName);
+        context.setVariable("seatType", seatType);
+        context.setVariable("blockedDate", blockedDate);
+        String emailContent = templateEngine.process("block-notification", context);
+        send(to, emailContent,"TripTix Notification: Your Blocked Seat is Now Unavailable");
+    }
+
+    public void sendTripReminderEmail(String to, String userName, Trip trip, String timeFrame, String departureTime) {
+        Context context = new Context();
+        context.setVariable("userName", userName);
+        context.setVariable("trip", trip);
+        context.setVariable("departureTime", departureTime);
+        context.setVariable("timeFrame", timeFrame);
+        String emailContent = templateEngine.process("trip-reminder", context);
+        send(to, emailContent, "TripTix Reminder: Your Trip is " + timeFrame);
+    }
+
+    public void sendTripTodayReminderEmail(String to, String userName, Trip trip, String departureTime) {
+        Context context = new Context();
+        context.setVariable("userName", userName);
+        context.setVariable("trip", trip);
+        context.setVariable("departureTime", departureTime);
+        String emailContent = templateEngine.process("trip-today-notification", context);
+        send(to, emailContent, "TripTix: Enjoy Your Trip Today!");
+    }
+
+
 }

@@ -38,6 +38,7 @@ public class PaymentCallBack {
                     System.out.println(booking == null);
                     if (booking != null) {
                         booking.setStatus("PAID");
+                        booking.getTrip().setBooked(true);
                         bookingService.save(booking);
                     }
                     return "payment-success"; // Return the name of Thymeleaf template

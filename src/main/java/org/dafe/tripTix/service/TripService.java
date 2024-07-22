@@ -4,10 +4,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.dafe.tripTix.entity.Seat;
 import org.dafe.tripTix.entity.Terminal;
 import org.dafe.tripTix.entity.Trip;
 import org.dafe.tripTix.exception.ApiException;
 import org.dafe.tripTix.exception.ResourceNotFoundException;
+import org.dafe.tripTix.repository.SeatRepository;
 import org.dafe.tripTix.repository.TripRepository;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,6 +24,7 @@ import java.util.List;
 public class TripService {
 
     private final TripRepository tripRepository;
+    private final SeatRepository seatRepository;
     private final HttpServletRequest request;
 
     @Cacheable(value = "bookings", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
@@ -29,8 +32,15 @@ public class TripService {
         return tripRepository.findAll();
     }
 
-    @CacheEvict(value = "bookings", allEntries = true)
     public Trip save(Trip trip) {
+        // Ensure the seat is blocked by the user
+        Seat seat = seatRepository.findById(trip.getSeat().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Seat not found with id: " + trip.getSeat().getId()));
+
+        if (seat.isBlocked() && seat.getUser().getId() != (trip.getUser().getId())) {
+            throw new IllegalStateException("This seat is blocked and it wasn't by you.");
+        }
+
         return tripRepository.save(trip);
     }
 

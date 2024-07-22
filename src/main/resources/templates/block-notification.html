@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Seat Unblocked</title>
+    <title>Seat Blocked</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,6 +24,7 @@
             color: #fff;
             padding: 10px 20px;
             border-radius: 8px 8px 0 0;
+            text-align: center;
         }
         .content {
             padding: 20px;
@@ -42,13 +43,13 @@
 <body>
 <div class="email-container">
     <div class="header">
-        <h1>TripTix Notification</h1>
+        <h1>Seat Blocked Notification</h1>
     </div>
     <div class="content">
         <p>Dear <span th:text="${userName}">User</span>,</p>
-        <p>Your reserved seat for <span th:text="${seatType}">seatType</span> that you reserved at
-            <span th:text="${blockedDate}">blockedDate</span>
-            has been unblocked as it exceeded the 24-hour hold period.</p>
+        <p>We are pleased to inform you that you have successfully blocked a seat for <span th:text="${seatType}">seatType</span> at
+            <span th:text="${blockedDate}">blockedDate</span>.</p>
+        <p>Please make sure to confirm your booking within 24 hours to avoid the seat being unblocked.</p>
         <p>Thank you,<br/>TripTix Team</p>
     </div>
     <div class="footer">
