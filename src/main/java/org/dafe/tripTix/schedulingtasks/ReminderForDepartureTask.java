@@ -18,7 +18,7 @@ public class ReminderForDepartureTask {
     private final TripRepository tripRepository;
     private final EmailService emailService;
 
-    @Scheduled(fixedRate = 1000) // Run every hour
+    @Scheduled(fixedRate = 3600000)
     public void sendReminders() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime oneDayFromNow = now.plusDays(1);
