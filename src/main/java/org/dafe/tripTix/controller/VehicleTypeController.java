@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
-@CrossOrigin
 @RequestMapping("/vehicle-type")
 public class VehicleTypeController {
 

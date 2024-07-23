@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
 @RequestMapping("/states")
 public class StateController {
     private StateService stateService;

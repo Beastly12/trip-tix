@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin("*")
 @RequestMapping("/terminals")
 public class TerminalController {
     private TerminalService terminalService;

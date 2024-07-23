@@ -23,10 +23,13 @@ public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CorsConfig corsConfigurationSource;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource.corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorise -> authorise
                         .requestMatchers("/bookings/**","/api/admin/**","/vehicle-type" ,"/api/submit/contactus", "/api/getAllContactus","/initializePayment", "api/auth/**", "/trip/**")

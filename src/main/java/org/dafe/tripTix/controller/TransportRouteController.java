@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin("*")
 @RequestMapping("/routes")
 public class TransportRouteController {
     private TransportRouteService transportRouteService;
