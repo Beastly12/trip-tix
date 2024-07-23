@@ -1,25 +1,34 @@
 package org.dafe.tripTix.controller;
 
 
+import org.dafe.tripTix.dto.ContactUsDto;
 import org.dafe.tripTix.email.EmailService;
+import org.dafe.tripTix.entity.Contactus;
 import org.dafe.tripTix.entity.User;
+import org.dafe.tripTix.service.ContactUsService;
 import org.dafe.tripTix.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class UserController {
     private final static Logger logger = LoggerFactory.getLogger(EmailService.class);
     private final UserService userService;
-    public UserController(UserService userService) {
+    private final ContactUsService contactUsService;
+    private final EmailService emailService;
+
+    public UserController(UserService userService, ContactUsService contactUsService, EmailService emailService) {
         this.userService = userService;
+        this.contactUsService = contactUsService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/user")
@@ -31,5 +40,44 @@ public class UserController {
         return ResponseEntity.ok(currentUser);
     }
 
+    @GetMapping("/getAllContactus")
+    public ResponseEntity<List> submitContactUsForm() {
+
+        List<Contactus> contactusList = contactUsService.findAll();
+        if (contactusList.isEmpty()){
+            return ResponseEntity.ok(contactusList);
+        }
+        return ResponseEntity.ok(contactusList);
+    }
+
+
+    @PostMapping("/submit/contactus")
+    public ResponseEntity<String> submitContactUsForm(@RequestBody ContactUsDto contactUsDto) {
+        List<User> adminUsers = userService.findAllAdmins();
+
+        // Notify all admin users
+        adminUsers.forEach(admin -> {
+            emailService.sendContactUsNotificationEmail(
+                    admin.getEmail(),
+                    contactUsDto.getFullName(),
+                    contactUsDto.getEmail(),
+                    contactUsDto.getPhoneNumber(),
+                    contactUsDto.getSubject(),
+                    contactUsDto.getMessage()
+            );
+        });
+
+        Contactus contactus = new Contactus(
+                contactUsDto.getFullName(),
+                contactUsDto.getEmail(),
+                contactUsDto.getPhoneNumber(),
+                contactUsDto.getSubject(),
+                contactUsDto.getMessage()
+        );
+
+        contactUsService.save(contactus);
+
+        return ResponseEntity.ok("Message sent to all admins.");
+    }
 
 }

@@ -29,7 +29,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorise -> authorise
-                        .requestMatchers("/bookings/**","/initializePayment", "api/auth/**", "/trip/**")
+                        .requestMatchers("/bookings/**","/api/admin/**","/vehicle-type" ,"/api/submit/contactus", "/api/getAllContactus","/initializePayment", "api/auth/**", "/trip/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()

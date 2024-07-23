@@ -27,6 +27,11 @@ public class TripService {
     private final SeatRepository seatRepository;
     private final HttpServletRequest request;
 
+
+    public long getTotalBookedTrips() {
+        return tripRepository.countBookedTrips();
+    }
+
     @Cacheable(value = "bookings", unless = "#result.isEmpty() || #root.target.isAuthenticated()")
     public List<Trip> findAll() {
         return tripRepository.findAll();

@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,10 @@ public class BookingService {
     private BookingsRepository bookingRepository;
 
     private SeatRepository seatRepository;
+
+    public BigDecimal getTotalAmountPaid() {
+        return bookingRepository.sumAmountByPaidStatus();
+    }
 
     @Cacheable(value = "bookings")
     public List<Booking> findAll() {

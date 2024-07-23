@@ -79,5 +79,15 @@ public class EmailService implements EmailSender {
         send(to, emailContent, "TripTix: Enjoy Your Trip Today!");
     }
 
+    public void sendContactUsNotificationEmail(String to, String fullName, String email, String phoneNumber, String subject, String message) {
+        Context context = new Context();
+        context.setVariable("fullName", fullName);
+        context.setVariable("email", email);
+        context.setVariable("phoneNumber", phoneNumber);
+        context.setVariable("subject", subject);
+        context.setVariable("message", message);
+        String emailContent = templateEngine.process("contactus", context);
+        send(to, emailContent, "New Contact Us Message Received");
+    }
 
 }

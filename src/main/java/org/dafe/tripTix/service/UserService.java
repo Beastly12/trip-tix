@@ -1,6 +1,7 @@
 package org.dafe.tripTix.service;
 
 import org.dafe.tripTix.entity.User;
+import org.dafe.tripTix.entity.UserRole;
 import org.dafe.tripTix.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,9 @@ public class UserService {
         userRepository.findAll().forEach(users::add);
 
         return users;
+    }
+
+    public List<User> findAllAdmins() {
+        return userRepository.findByAppUserRole(UserRole.Admin);
     }
 }

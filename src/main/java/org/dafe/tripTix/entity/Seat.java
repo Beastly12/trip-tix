@@ -1,5 +1,6 @@
 package org.dafe.tripTix.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class Seat {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_type_id", referencedColumnName = "id")
+    @JsonBackReference
     private VehicleType vehicleType;
 
     @Nullable
