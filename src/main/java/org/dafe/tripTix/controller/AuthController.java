@@ -53,8 +53,23 @@ public class AuthController {
 
 
     @GetMapping("/confirmEmail")
-    public int confirm(@RequestParam("userid") int userid) {
-        return userService.enableUserEmail(userid);
+    public String confirm(@RequestParam("userid") int userid) {
+        int isEmailConfirmed = userService.enableUserEmail(userid);
+
+        String header = "<html><head><style>" +
+                "body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; margin: 0; }" +
+                "h1 { color: #4CAF50; }" +
+                "p { font-size: 16px; color: #333; }" +
+                "div { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }" +
+                "</style></head><body><div>";
+
+        String footer = "</div></body></html>";
+
+        if (isEmailConfirmed == 1) {
+            return header + "<h1>Success</h1><p>Your email has been successfully confirmed. Thank you!</p>" + footer;
+        } else {
+            return header + "<h1>Error</h1><p>Failed to confirm email. Please try again.</p>" + footer;
+        }
     }
 
 }
