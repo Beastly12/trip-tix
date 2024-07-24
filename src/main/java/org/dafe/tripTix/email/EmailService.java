@@ -90,11 +90,4 @@ public class EmailService implements EmailSender {
         send(to, emailContent, "New Contact Us Message Received");
     }
 
-    public void sendIpaddEmail(String to, String ipadd) {
-        Context context = new Context();
-        context.setVariable("ipadd", ipadd);
-        String emailContent = templateEngine.process("ipadd", context);
-        send(to, emailContent, "New Contact Us Message Received");
-    }
-
 }

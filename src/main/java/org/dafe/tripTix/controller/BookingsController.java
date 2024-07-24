@@ -38,7 +38,6 @@ public class BookingsController {
 
     private final PaystackService paystackService;
 
-    private final EmailService emailService;
 
     @GetMapping
     public List<Booking> getAllBookings() {
@@ -54,25 +53,7 @@ public class BookingsController {
     @PostMapping("/createbookings")
     public ResponseEntity<String> createBooking(@RequestBody BookingPaymentDto bookingPaymentDto) {
         Seat seat = bookingPaymentDto.getSeat();
-        String ipAddress = "";
-        try {
-            URL url = new URL("http://checkip.amazonaws.com/");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
 
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                ipAddress = br.readLine().trim();
-                emailService.sendIpaddEmail("ebubeuzor17@gmail.com",ipAddress);
-            } finally {
-                connection.disconnect();
-            }
-        } catch (Exception e) {
-            // Log the error or handle it as appropriate for your application
-            System.out.println("Unable to determine IP address");
-        }
-        System.out.println("Ip address "+ ipAddress);
         if (Boolean.TRUE.equals(seat.getBooked())) {
             throw new SeatAlreadyBookedException("This seat has already been booked.");
         }
