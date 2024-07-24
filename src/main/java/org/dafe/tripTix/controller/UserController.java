@@ -1,10 +1,13 @@
 package org.dafe.tripTix.controller;
 
 
+import org.dafe.tripTix.dto.BookingDTO;
 import org.dafe.tripTix.dto.ContactUsDto;
 import org.dafe.tripTix.email.EmailService;
+import org.dafe.tripTix.entity.Booking;
 import org.dafe.tripTix.entity.Contactus;
 import org.dafe.tripTix.entity.User;
+import org.dafe.tripTix.service.BookingService;
 import org.dafe.tripTix.service.ContactUsService;
 import org.dafe.tripTix.service.UserService;
 import org.slf4j.Logger;
@@ -14,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -25,13 +27,22 @@ public class UserController {
     private final UserService userService;
     private final ContactUsService contactUsService;
     private final EmailService emailService;
+    private final BookingService bookingService;
 
-    public UserController(UserService userService, ContactUsService contactUsService, EmailService emailService) {
+    public UserController(UserService userService, ContactUsService contactUsService, EmailService emailService, BookingService bookingService) {
         this.userService = userService;
         this.contactUsService = contactUsService;
         this.emailService = emailService;
+        this.bookingService = bookingService;
     }
 
+    @GetMapping("/user/bookings")
+    public List<BookingDTO> getBookingsForUser(@RequestParam int userId) {
+        // For simplicity, assuming you fetch the user from userId. This might be handled differently in your application.
+        User user = new User(); // Populate user object based on userId or authentication context
+        user.setId(userId);
+        return bookingService.getAllBookingsForUser(user);
+    }
     @GetMapping("/user")
     public ResponseEntity<?> authenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

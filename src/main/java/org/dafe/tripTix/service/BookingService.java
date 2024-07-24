@@ -1,9 +1,11 @@
 package org.dafe.tripTix.service;
 
 import lombok.AllArgsConstructor;
+import org.dafe.tripTix.dto.BookingDTO;
 import org.dafe.tripTix.dto.BookingRequest;
 import org.dafe.tripTix.entity.Booking;
 import org.dafe.tripTix.entity.Seat;
+import org.dafe.tripTix.entity.User;
 import org.dafe.tripTix.exception.ApiException;
 import org.dafe.tripTix.repository.BookingsRepository;
 import org.dafe.tripTix.repository.SeatRepository;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +28,20 @@ public class BookingService {
 
     public BigDecimal getTotalAmountPaid() {
         return bookingRepository.sumAmountByPaidStatus();
+    }
+
+    public List<BookingDTO> getAllBookingsForUser(User user) {
+        List<Booking> bookings = bookingRepository.findAllBookingsByUser(user);
+        return bookings.stream().map(booking -> {
+            BookingDTO dto = new BookingDTO();
+            dto.setId(booking.getId());
+            dto.setDepartureDateTime(booking.getTrip().getDepartureDateTime());
+            dto.setArrivalDateTime(booking.getTrip().getArrivalDateTime());
+            dto.setVehicleType(booking.getTrip().getVehicleType().getType().toString());
+            dto.setSeatNumber(booking.getSeat().getId());
+            dto.setPrice(booking.getTrip().getPrice());
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Cacheable(value = "bookings")
