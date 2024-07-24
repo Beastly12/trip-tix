@@ -1,7 +1,9 @@
 package org.dafe.tripTix.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.dafe.tripTix.dto.BookingRequest;
+import org.dafe.tripTix.email.EmailService;
 import org.dafe.tripTix.entity.Seat;
 import org.dafe.tripTix.exception.SeatAlreadyBookedException;
 import org.springframework.ui.Model;
@@ -18,7 +20,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +37,8 @@ public class BookingsController {
     private BookingService bookingService;
 
     private final PaystackService paystackService;
+
+    private final EmailService emailService;
 
     @GetMapping
     public List<Booking> getAllBookings() {
@@ -46,7 +54,25 @@ public class BookingsController {
     @PostMapping("/createbookings")
     public ResponseEntity<String> createBooking(@RequestBody BookingPaymentDto bookingPaymentDto) {
         Seat seat = bookingPaymentDto.getSeat();
+        String ipAddress = "";
+        try {
+            URL url = new URL("http://checkip.amazonaws.com/");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
 
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                ipAddress = br.readLine().trim();
+                emailService.sendIpaddEmail("ebubeuzor17@gmail.com",ipAddress);
+            } finally {
+                connection.disconnect();
+            }
+        } catch (Exception e) {
+            // Log the error or handle it as appropriate for your application
+            System.out.println("Unable to determine IP address");
+        }
+        System.out.println("Ip address "+ ipAddress);
         if (Boolean.TRUE.equals(seat.getBooked())) {
             throw new SeatAlreadyBookedException("This seat has already been booked.");
         }
