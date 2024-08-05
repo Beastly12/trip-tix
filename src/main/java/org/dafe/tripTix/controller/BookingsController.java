@@ -1,12 +1,8 @@
 package org.dafe.tripTix.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.dafe.tripTix.dto.BookingRequest;
-import org.dafe.tripTix.email.EmailService;
 import org.dafe.tripTix.entity.Seat;
-import org.dafe.tripTix.exception.SeatAlreadyBookedException;
-import org.springframework.ui.Model;
+import org.dafe.tripTix.exception.SeatException;
 import org.dafe.tripTix.dto.BookingPaymentDto;
 import org.dafe.tripTix.dto.InitializePaymentDto;
 import org.dafe.tripTix.entity.Booking;
@@ -15,19 +11,12 @@ import org.dafe.tripTix.repository.InitializePaymentResponse;
 import org.dafe.tripTix.repository.PaymentVerificationResponse;
 import org.dafe.tripTix.service.BookingService;
 import org.dafe.tripTix.service.PaystackService;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -55,12 +44,17 @@ public class BookingsController {
         Seat seat = bookingPaymentDto.getSeat();
 
         if (Boolean.TRUE.equals(seat.getBooked())) {
-            throw new SeatAlreadyBookedException("This seat has already been booked.");
+            throw new SeatException("This seat has already been booked.");
+        }
+
+        if (seat.isBlocked() && seat.getUser() != bookingPaymentDto.getUser()){
+            throw new SeatException("This seat has been blocked by another user.");
         }
 
         InitializePaymentDto paymentDto = new InitializePaymentDto();
         BigDecimal _a = new BigDecimal("100");
-        BigDecimal amount = bookingPaymentDto.getAmount().multiply(_a);
+
+        BigDecimal amount = BigDecimal.valueOf(bookingPaymentDto.getTrip().getPrice()).multiply(_a);
 
         paymentDto.setAmount(amount);
         String callbackUrl = "https://trip-tix-production.up.railway.app/bookings/paystack/callback";
@@ -76,7 +70,7 @@ public class BookingsController {
         booking.setTrip(bookingPaymentDto.getTrip());
         booking.setUser(bookingPaymentDto.getUser());
         booking.setReference(paymentResponse.getData().getReference());
-        booking.setAmount(bookingPaymentDto.getAmount());
+        booking.setAmount(amount);
         booking.setNoOfAdults(bookingPaymentDto.getNoOfAdults());
         booking.setNoOfChildren(bookingPaymentDto.getNoOfChildren());
         booking.setBookedSeat(bookingPaymentDto.getBookedSeat());

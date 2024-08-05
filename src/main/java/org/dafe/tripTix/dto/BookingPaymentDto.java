@@ -25,10 +25,6 @@ public class BookingPaymentDto {
     @JsonProperty("user")
     private User user;
 
-    @NotNull(message = "Amount cannot be null")
-    @JsonProperty("amount")
-    private BigDecimal amount;
-
     @NotNull(message = "Email cannot be null")
     @JsonProperty("email")
     private String email;

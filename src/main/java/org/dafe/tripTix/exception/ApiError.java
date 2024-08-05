@@ -1,4 +1,4 @@
-package com.example.triptix.exception;
+package org.dafe.tripTix.exception;
 
 import java.time.LocalDateTime;
 
